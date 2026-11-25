@@ -22,7 +22,7 @@ open class TextInputBuilder(
     protected val style: TextInputStyle
 ) : IBuilder<Label> {
     var placeholder: String? = null
-    var requiredLength: IntRange = 1..1
+    var requiredLength: IntRange? = null
 
     /**
      * Builds and returns a new text input field wrapped in its [Label].
@@ -30,12 +30,10 @@ open class TextInputBuilder(
      * @return the newly created text input field
      */
     override fun build(): Label {
-        val input = TextInput.create(customId, style)
-            .setPlaceholder(placeholder)
-            .setRequiredRange(requiredLength.first, requiredLength.last)
-            .build()
+        val input = TextInput.create(customId, style).setPlaceholder(placeholder)
+        requiredLength?.let { input.setRequiredRange(it.first, it.last) }
 
-        return Label.of(label, input)
+        return Label.of(label, input.build())
     }
 }
 
