@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.interactions.Interaction
 import net.dv8tion.jda.api.requests.GatewayIntent
 import org.slf4j.LoggerFactory
+import java.util.ServiceLoader
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -113,6 +114,7 @@ public class Client(configure: ClientOptions.() -> Unit = {}) {
 
     internal fun configure(builder: JDABuilder): JDABuilder {
         builder.addEventListeners(router, *pending.toTypedArray())
+        ServiceLoader.load(ClientExtension::class.java).forEach { it.install(builder) }
         options.builders.forEach { it(builder) }
         return builder
     }

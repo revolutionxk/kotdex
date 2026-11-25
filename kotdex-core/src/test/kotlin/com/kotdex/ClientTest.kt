@@ -3,7 +3,6 @@ package com.kotdex
 import com.kotdex.annotations.Slash
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -33,21 +32,35 @@ class ClientTest {
     @AfterTest
     fun close() = client.shutdown()
 
-    private fun attachedListeners(): List<EventListener> {
-        val listeners = slot<Array<Any>>()
+    private val listeners = mutableListOf<EventListener>()
+
+    private fun attachedBuilder(): JDABuilder {
         val builder = mockk<JDABuilder>(relaxed = true)
         every { builder.addEventListeners(*varargAllNullable { true }) } answers {
-            listeners.captured = (args[0] as Array<*>).map { it!! }.toTypedArray()
+            listeners += (args[0] as Array<*>).map { it as EventListener }
             builder
         }
-        client.configure(builder)
-        return listeners.captured.map { it as EventListener }
+        return client.configure(builder)
+    }
+
+    private fun attachedListeners(): List<EventListener> {
+        attachedBuilder()
+        return listeners
     }
 
     private fun slash(name: String) = mockk<SlashCommandInteractionEvent>(relaxed = true) {
         every { this@mockk.name } returns name
         every { subcommandGroup } returns null
         every { subcommandName } returns null
+    }
+
+    @Test
+    fun `extensions found on the classpath configure the builder`() {
+        RecordingExtension.builders.clear()
+
+        val builder = attachedBuilder()
+
+        assertEquals(listOf(builder), RecordingExtension.builders)
     }
 
     @Test
