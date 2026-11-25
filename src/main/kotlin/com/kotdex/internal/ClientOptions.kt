@@ -6,8 +6,7 @@ import net.dv8tion.jda.api.utils.ChunkingFilter
 import net.dv8tion.jda.api.utils.MemberCachePolicy
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 
-data class JDAOptions(
-    var prefix: String = "!",
+data class ClientOptions(
     var chunkingFilter: ChunkingFilter = ChunkingFilter.NONE,
     var largeThreshold: Int = 250,
     var policy: MemberCachePolicy = MemberCachePolicy.DEFAULT
@@ -24,5 +23,10 @@ data class JDAOptions(
 
     fun theme(block: Theme.() -> Unit) {
         Theme.apply(block)
+    }
+
+    var commandOptions: CommandOptions = CommandOptions()
+    fun commandOptions(block: CommandOptions.() -> Unit) {
+        commandOptions.apply(block)
     }
 }
