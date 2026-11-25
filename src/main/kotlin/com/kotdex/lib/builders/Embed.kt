@@ -25,8 +25,8 @@ data class EmbedFieldInfo(
 
 @EmbedDslMarker
 class EmbedBuilder(
-    var title: String,
-    var description: String,
+    var title: String? = null,
+    var description: String? = null,
     var color: Color = Color.decode(Theme.success),
     var thumbnailUrl: String? = null,
     var imageUrl: String? = null,
@@ -63,5 +63,5 @@ class EmbedBuilder(
 }
 
 fun Embed(block: com.kotdex.lib.builders.EmbedBuilder.() -> Unit): MessageEmbed {
-    return EmbedBuilder("", "").apply(block).build()
+    return com.kotdex.lib.builders.EmbedBuilder().apply(block).build()
 }
