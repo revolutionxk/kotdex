@@ -1,0 +1,42 @@
+package com.kotdex.builders.modal
+
+import net.dv8tion.jda.api.components.label.Label
+import net.dv8tion.jda.api.components.textinput.TextInputStyle
+
+/**
+ * A builder for creating paragraph text input fields.
+ *
+ * @property customId a unique identifier for the text input field
+ * @property label a label to display alongside the text input field
+ */
+public class ParagraphTextInputBuilder(
+    customId: String,
+    label: String
+) : TextInputBuilder(customId, label, TextInputStyle.PARAGRAPH)
+
+/**
+ * Creates a new paragraph text input field using the specified custom ID and label,
+ * and applies additional configuration using the specified block.
+ *
+ * Example usage:
+ *
+ * ```kotlin
+ * val paragraphInput = paragraphtextinput("custom_id", "Enter your feedback") {
+ *     maxLength = 500
+ *     placeholder = "Type your feedback here"
+ * }
+ * ```
+ *
+ * @param customId a unique identifier for the text input field
+ * @param label a label to display alongside the text input field
+ * @param block a lambda expression containing additional configuration for the builder
+ * @return the newly created text input field
+ *
+ */
+public fun paragraphtextinput(
+    customId: String,
+    label: String,
+    block: ParagraphTextInputBuilder.() -> Unit
+): Label {
+    return ParagraphTextInputBuilder(customId, label).apply(block).build()
+}

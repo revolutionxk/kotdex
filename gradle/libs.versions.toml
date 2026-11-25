@@ -1,12 +1,20 @@
 [versions]
 kotlin = "2.4.21"
 jda = "6.7.0"
+coroutines = "1.11.0"
+classgraph = "6.0.2"
+compose-runtime = "1.12.2"
 logback = "1.6.8"
+mockk = "1.14.12"
 
 [libraries]
 jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-runtime" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
-
-[plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }

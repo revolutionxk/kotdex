@@ -1,0 +1,109 @@
+package com.kotdex.builders.modal
+
+import com.kotdex.builders.IBuilder
+import com.kotdex.builders.modal.TextInputBuilder
+import net.dv8tion.jda.api.components.label.Label
+import net.dv8tion.jda.api.components.textinput.TextInput
+import net.dv8tion.jda.api.components.textinput.TextInputStyle
+import net.dv8tion.jda.api.modals.Modal
+
+@DslMarker
+public annotation class ModalDslBuilder
+
+/**
+ * A builder used to create a [Modal] object.
+ *
+ * @property customId the unique identifier for the modal.
+ * @property label the title of the modal.
+ */
+
+@ModalDslBuilder
+public class ModalBuilder(
+    public var customId: String,
+    public var label: String
+) : IBuilder<Modal> {
+    private val textInputs: MutableList<Label> = mutableListOf()
+
+    /**
+     * Adds a [TextInput] object to the modal.
+     *
+     * @param customId the unique identifier for the text input.
+     * @param label the label for the text input.
+     * @param type the [TextInputStyle] for the text input.
+     * @param block a lambda expression used to configure the [TextInputBuilder].
+     */
+    public fun textinput(
+        customId: String,
+        label: String,
+        type: TextInputStyle,
+        block: TextInputBuilder.() -> Unit
+    ) {
+        val textInput = TextInputBuilder(customId, label, type).apply(block).build()
+
+        textInputs.add(textInput)
+    }
+
+    /**
+     * Adds a short [TextInput] object to the modal.
+     *
+     * @param customId the unique identifier for the text input.
+     * @param label the label for the text input.
+     * @param block a lambda expression used to configure the [TextInputBuilder].
+     */
+    public fun shorttextinput(
+        customId: String,
+        label: String,
+        block: TextInputBuilder.() -> Unit
+    ) {
+        textinput(customId, label, TextInputStyle.SHORT, block)
+    }
+
+    /**
+     * Adds a paragraph [TextInput] object to the modal.
+     *
+     * @param customId the unique identifier for the text input.
+     * @param label the label for the text input.
+     * @param block a lambda expression used to configure the [TextInputBuilder].
+     */
+    public fun paragraphtextinput(
+        customId: String,
+        label: String,
+        block: TextInputBuilder.() -> Unit
+    ) {
+        textinput(customId, label, TextInputStyle.PARAGRAPH, block)
+    }
+
+    override fun build(): Modal {
+        return Modal.create(customId, label)
+            .addComponents(textInputs)
+            .build()
+    }
+}
+
+/**
+ * Creates a [ModalBuilder] object with the specified [customId] and [label].
+ *
+ * Example usage:
+ * ```kotlin
+ *  val myModal = modal("modal1", "My Modal") {
+ *     shorttextinput("name", "Name") {
+ *         setPlaceholder("Enter your name")
+ *     }
+ *     paragraphtextinput("desc", "Description") {
+ *         setPlaceholder("Enter a description")
+ *     }
+ * }
+ * ```
+ *
+ * @param customId the unique identifier for the modal.
+ * @param label the title of the modal.
+ * @param block a lambda expression used to configure the [ModalBuilder].
+ * @return the created [Modal] object.
+ */
+public fun modal(
+    customId: String,
+    label: String,
+    block: ModalBuilder.() -> Unit
+): Modal {
+    return ModalBuilder(customId, label).apply(block).build()
+}
