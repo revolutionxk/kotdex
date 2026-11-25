@@ -1,7 +1,7 @@
 package com.kotdex.lib.builders.interaction.components.modal.components
 
-import net.dv8tion.jda.api.interactions.components.text.TextInput
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle
+import net.dv8tion.jda.api.components.label.Label
+import net.dv8tion.jda.api.components.textinput.TextInputStyle
 
 /**
  * A builder for creating paragraph text input fields.
@@ -48,6 +48,6 @@ fun paragraphtextinput(
     customId: String,
     label: String,
     block: ParagraphTextInputBuilder.() -> Unit
-): TextInput {
+): Label {
     return ParagraphTextInputBuilder(customId, label).apply(block).build()
 }

@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.21"
-jda = "5.0.0-beta.8"
+jda = "6.7.0"
 logback = "1.6.8"
 
 [libraries]

@@ -1,7 +1,7 @@
 package com.kotdex.lib.builders.interaction.components
 
-import net.dv8tion.jda.api.interactions.components.ActionRow
-import net.dv8tion.jda.api.interactions.components.ItemComponent
+import net.dv8tion.jda.api.components.actionrow.ActionRow
+import net.dv8tion.jda.api.components.actionrow.ActionRowChildComponent
 
 /**
  * Creates an [ActionRow] containing the provided [components].
@@ -14,15 +14,15 @@ import net.dv8tion.jda.api.interactions.components.ItemComponent
  * val actionRow = row(button1, button2)
  * ```
  *
- * @param components the [ItemComponent] objects to add to the row.
+ * @param components the [ActionRowChildComponent] objects to add to the row.
  * @return the created [ActionRow] object.
  */
-fun row(vararg components: ItemComponent): ActionRow {
-    return ActionRow.of(*components)
+fun row(vararg components: ActionRowChildComponent): ActionRow {
+    return ActionRow.of(components.asList())
 }
 
 /**
- * Creates an [ActionRow] containing the [ItemComponent] objects in this collection.
+ * Creates an [ActionRow] containing the [ActionRowChildComponent] objects in this collection.
  *
  * Example usage:
  *
@@ -36,6 +36,4 @@ fun row(vararg components: ItemComponent): ActionRow {
  *
  * @return the created [ActionRow] object.
  */
-fun Collection<ItemComponent>.row() = row(*this.toTypedArray())
-
-
+fun Collection<ActionRowChildComponent>.row(): ActionRow = ActionRow.of(this)

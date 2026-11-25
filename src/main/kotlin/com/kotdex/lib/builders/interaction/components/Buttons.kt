@@ -1,8 +1,8 @@
 package com.kotdex.lib.builders.interaction.components
 
 import net.dv8tion.jda.api.entities.emoji.Emoji
-import net.dv8tion.jda.api.interactions.components.buttons.Button
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle
+import net.dv8tion.jda.api.components.buttons.Button
+import net.dv8tion.jda.api.components.buttons.ButtonStyle
 
 /**
  * Returns a new [Button] instance with the provided properties.
@@ -21,7 +21,13 @@ fun button(
     style: ButtonStyle = ButtonStyle.SECONDARY,
     disabled: Boolean = false
 ): Button {
-    return Button.of(style, id, label, emoji).withDisabled(disabled)
+    val button = when {
+        label != null -> Button.of(style, id, label).withEmoji(emoji)
+        emoji != null -> Button.of(style, id, emoji)
+        else -> throw IllegalArgumentException("A button needs a label or an emoji")
+    }
+
+    return button.withDisabled(disabled)
 }
 
 /**

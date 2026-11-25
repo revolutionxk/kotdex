@@ -19,11 +19,11 @@ class MessageEdit : MessageData<MessageEditData>() {
     override fun build(): MessageEditData {
         val builder = MessageCreateBuilder()
 
-        content?.let { builder.setContent(content) }
-        embeds?.let { builder.setEmbeds(*embeds!!.toTypedArray()) }
-        files?.let { builder.setFiles(*files!!.toTypedArray()) }
-        components?.let { builder.setComponents(*components!!.toTypedArray()) }
-        mentions?.let { builder.setAllowedMentions(mentions) }
+        content?.let { builder.setContent(it) }
+        embeds?.let { builder.setEmbeds(it) }
+        files?.let { builder.setFiles(it) }
+        components?.let { builder.setComponents(it) }
+        mentions?.let { builder.setAllowedMentions(it) }
         builder.setTTS(tts)
 
         val messageCreateData = builder.build()

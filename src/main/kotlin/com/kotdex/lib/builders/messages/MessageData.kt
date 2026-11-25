@@ -3,7 +3,7 @@ package com.kotdex.lib.builders.messages
 import com.kotdex.lib.builders.IBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
-import net.dv8tion.jda.api.interactions.components.LayoutComponent
+import net.dv8tion.jda.api.components.MessageTopLevelComponent
 import net.dv8tion.jda.api.utils.FileUpload
 import net.dv8tion.jda.api.utils.messages.MessageData
 
@@ -16,7 +16,7 @@ abstract class MessageData<T : MessageData> : IBuilder<T> {
     var content: String? = null
     var embeds: List<MessageEmbed>? = null
     var files: List<FileUpload>? = null
-    var components: List<LayoutComponent>? = null
+    var components: List<MessageTopLevelComponent>? = null
     var mentions: List<Message.MentionType>? = null
     var tts: Boolean = false
 

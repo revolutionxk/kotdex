@@ -2,10 +2,10 @@ package com.kotdex.lib.builders.interaction.components.modal
 
 import com.kotdex.lib.builders.IBuilder
 import com.kotdex.lib.builders.interaction.components.modal.components.TextInputBuilder
-import com.kotdex.lib.builders.interaction.components.row
-import net.dv8tion.jda.api.interactions.components.text.TextInput
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle
-import net.dv8tion.jda.api.interactions.modals.Modal
+import net.dv8tion.jda.api.components.label.Label
+import net.dv8tion.jda.api.components.textinput.TextInput
+import net.dv8tion.jda.api.components.textinput.TextInputStyle
+import net.dv8tion.jda.api.modals.Modal
 
 @DslMarker
 annotation class ModalDslBuilder
@@ -22,7 +22,7 @@ class ModalBuilder(
     var customId: String,
     var label: String
 ) : IBuilder<Modal> {
-    private val textInputs: MutableList<TextInput> = mutableListOf()
+    private val textInputs: MutableList<Label> = mutableListOf()
 
     /**
      * Adds a [TextInput] object to the modal.
@@ -74,10 +74,8 @@ class ModalBuilder(
     }
 
     override fun build(): Modal {
-        val rows = textInputs.map { textInput -> row(textInput) }.toTypedArray()
-
         return Modal.create(customId, label)
-            .addComponents(*rows)
+            .addComponents(textInputs)
             .build()
     }
 }

@@ -1,8 +1,8 @@
 package com.kotdex.lib.builders.interaction.components
 
 import com.kotdex.lib.builders.IBuilder
-import net.dv8tion.jda.api.interactions.components.selections.EntitySelectMenu
-import net.dv8tion.jda.api.interactions.components.selections.EntitySelectMenu.SelectTarget
+import net.dv8tion.jda.api.components.selections.EntitySelectMenu
+import net.dv8tion.jda.api.components.selections.EntitySelectMenu.SelectTarget
 
 @DslMarker
 annotation class EntitySelectMenuDslMarker

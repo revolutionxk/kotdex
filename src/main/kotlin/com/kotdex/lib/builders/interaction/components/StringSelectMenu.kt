@@ -2,8 +2,8 @@ package com.kotdex.lib.builders.interaction.components
 
 import com.kotdex.lib.builders.IBuilder
 import net.dv8tion.jda.api.entities.emoji.Emoji
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu
+import net.dv8tion.jda.api.components.selections.SelectOption
+import net.dv8tion.jda.api.components.selections.StringSelectMenu
 
 @DslMarker
 annotation class StringSelectMenuDslMarker
@@ -97,7 +97,7 @@ class StringSelectMenuBuilder(private val customId: String = "") : IBuilder<Stri
         return StringSelectMenu.create(customId)
             .setPlaceholder(placeholder)
             .setRequiredRange(requiredRange.first, requiredRange.last)
-            .addOptions(*options.toTypedArray())
+            .addOptions(options)
             .setDefaultValues(defaultValue)
             .build()
     }

@@ -1,9 +1,9 @@
 package com.kotdex.lib.builders.interaction.components.modal.components
 
 import com.kotdex.lib.builders.IBuilder
-import net.dv8tion.jda.api.interactions.components.text.TextInput
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle
-
+import net.dv8tion.jda.api.components.label.Label
+import net.dv8tion.jda.api.components.textinput.TextInput
+import net.dv8tion.jda.api.components.textinput.TextInputStyle
 
 @DslMarker
 annotation class TextInputDslMarker
@@ -20,20 +20,22 @@ open class TextInputBuilder(
     protected val customId: String,
     protected val label: String,
     protected val style: TextInputStyle
-) : IBuilder<TextInput> {
+) : IBuilder<Label> {
     var placeholder: String? = null
     var requiredLength: IntRange = 1..1
 
     /**
-     * Builds and returns a new text input field.
+     * Builds and returns a new text input field wrapped in its [Label].
      *
      * @return the newly created text input field
      */
-    override fun build(): TextInput {
-        return TextInput.create(customId, label, style)
+    override fun build(): Label {
+        val input = TextInput.create(customId, style)
             .setPlaceholder(placeholder)
             .setRequiredRange(requiredLength.first, requiredLength.last)
             .build()
+
+        return Label.of(label, input)
     }
 }
 
@@ -61,6 +63,6 @@ fun textinput(
     label: String,
     type: TextInputStyle,
     block: TextInputBuilder.() -> Unit
-): TextInput {
+): Label {
     return TextInputBuilder(customId, label, type).apply(block).build()
 }
