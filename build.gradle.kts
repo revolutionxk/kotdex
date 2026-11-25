@@ -1,6 +1,9 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "1.8.0"
-    application
+    alias(libs.plugins.kotlin.jvm)
+    `java-library`
+    `maven-publish`
 }
 
 group = "com.kotdex"
@@ -11,19 +14,32 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.0-beta.8")
-    implementation("ch.qos.logback:logback-classic:1.2.9")
+    api(libs.jda)
     testImplementation(kotlin("test"))
+    testRuntimeOnly(libs.junit.launcher)
+    testRuntimeOnly(libs.logback)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-kotlin {
-    jvmToolchain(11)
-}
-
-application {
-    mainClass.set("MainKt")
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
 }

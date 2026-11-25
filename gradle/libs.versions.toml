@@ -1,0 +1,12 @@
+[versions]
+kotlin = "2.4.21"
+jda = "5.0.0-beta.8"
+logback = "1.6.8"
+
+[libraries]
+jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
