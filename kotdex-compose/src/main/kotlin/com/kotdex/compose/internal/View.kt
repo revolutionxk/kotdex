@@ -10,7 +10,9 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -41,12 +43,12 @@ internal class LiveView(
     private var nextSlot = 0
     private var nodes: Map<Int, InteractiveNode> = emptyMap()
     private val renderLock = Mutex()
+    private val clicks = mutableListOf<GenericComponentInteractionCreateEvent>()
     private var target: EditTarget? = null
     private var lastSent: String? = null
-    private var finalComponents: List<MessageTopLevelComponent> = emptyList()
+    private var finalComponents: List<MessageTopLevelComponent>? = null
     private var loop: Job? = null
     private var expiry: Job? = null
-    private var clicks = 0
 
     @Volatile
     private var closed = false
@@ -61,7 +63,8 @@ internal class LiveView(
         loop = runtime.scope.launch {
             for (signal in dirty) {
                 if (closed) break
-                if (clicks == 0 && push()) delay(minEditInterval)
+                if (clicks.any { !it.isAcknowledged }) continue
+                if (push()) delay(minEditInterval)
             }
         }
         touch()
@@ -82,7 +85,7 @@ internal class LiveView(
         }
 
         touch()
-        clicks++
+        clicks += event
         val acknowledgement = Mutex()
         var settled = false
         val watchdog = runtime.scope.launch {
@@ -95,53 +98,61 @@ internal class LiveView(
             }
         }
         try {
-            node.handle(event)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Throwable) {
-            report(event, e)
-        }
-
-        try {
+            try {
+                node.handle(event)
+            } catch (e: CancellationException) {
+                currentCoroutineContext().ensureActive()
+                logger.warn("Component handler in view {} was cancelled", id, e)
+            } catch (e: Throwable) {
+                report(event, e)
+            }
             if (!closed) runtime.awaitRecomposition()
             acknowledgement.withLock {
                 settled = true
-                watchdog.cancel()
                 finish(event)
             }
         } finally {
-            clicks--
+            watchdog.cancel()
+            clicks -= event
+            dirty.trySend(Unit)
         }
     }
 
     private suspend fun finish(event: GenericComponentInteractionCreateEvent) = renderLock.withLock {
-        val components = if (closed) finalComponents else render()
-        if (!event.isAcknowledged) {
-            event.editMessage(editData(components)).await()
-            target = HookTarget(event.hook)
-            lastSent = fingerprint(components)
-        } else if (fingerprint(components) != lastSent) {
-            send(components)
+        val components = if (closed) finalComponents else renderOrClose()
+        when {
+            components == null -> if (!event.isAcknowledged) event.deferEdit().await()
+            !event.isAcknowledged -> {
+                event.editMessage(editData(components)).await()
+                target = HookTarget(event.hook)
+                lastSent = fingerprint(components)
+            }
+            fingerprint(components) != lastSent -> send(components)
         }
     }
 
     override suspend fun close(): Unit = withContext(runtime.context + NonCancellable) {
         if (closed) return@withContext
-        val components = render(disabled = true)
         closed = true
+        val components = runCatching { render(disabled = true) }
+            .onFailure { logger.warn("View {} could not render its final state", id, it) }
+            .getOrNull()
         finalComponents = components
         loop?.cancel()
         expiry?.cancel()
-        composition.dispose()
-        runtime.remove(this@LiveView)
-        if (clicks == 0 && fingerprint(components) != lastSent) {
+        try {
+            composition.dispose()
+        } finally {
+            runtime.remove(this@LiveView)
+        }
+        if (components != null && clicks.isEmpty() && fingerprint(components) != lastSent) {
             renderLock.withLock { send(components) }
         }
     }
 
     private suspend fun push(): Boolean = renderLock.withLock {
         if (closed) return@withLock false
-        val components = render()
+        val components = renderOrClose() ?: return@withLock false
         if (fingerprint(components) == lastSent) return@withLock false
         send(components)
     }
@@ -159,6 +170,12 @@ internal class LiveView(
             runtime.scope.launch { close() }
             false
         }
+    }
+
+    private fun renderOrClose(): List<MessageTopLevelComponent>? = runCatching { render() }.getOrElse {
+        logger.error("Stopping view {} because it could not be rendered", id, it)
+        runtime.scope.launch { close() }
+        null
     }
 
     private fun render(disabled: Boolean = false): List<MessageTopLevelComponent> {

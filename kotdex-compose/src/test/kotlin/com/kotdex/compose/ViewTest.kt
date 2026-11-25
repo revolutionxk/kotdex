@@ -14,7 +14,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
@@ -24,8 +27,11 @@ import net.dv8tion.jda.api.components.MessageTopLevelComponent
 import net.dv8tion.jda.api.components.actionrow.ActionRow
 import net.dv8tion.jda.api.components.container.Container
 import net.dv8tion.jda.api.components.textdisplay.TextDisplay
+import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
+import net.dv8tion.jda.api.interactions.InteractionHook
 import net.dv8tion.jda.api.modals.Modal
+import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction
 import net.dv8tion.jda.api.requests.restaction.interactions.MessageEditCallbackAction
 import net.dv8tion.jda.api.requests.restaction.interactions.ModalCallbackAction
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction
@@ -33,6 +39,7 @@ import net.dv8tion.jda.api.utils.messages.MessageEditData
 import java.util.concurrent.CompletableFuture
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.minutes
 
@@ -66,7 +73,13 @@ class ViewTest {
         }
     }
 
-    private fun click(id: String, user: Long = 1, onEdit: (MessageEditData) -> Unit = {}): ButtonInteractionEvent {
+    private fun click(
+        id: String,
+        user: Long = 1,
+        onEdit: (MessageEditData) -> Unit = {},
+        acknowledgement: CompletableFuture<InteractionHook> = CompletableFuture.completedFuture(mockk()),
+        hookEdits: MutableList<MessageEditData> = mutableListOf(),
+    ): ButtonInteractionEvent {
         var acknowledged = false
         val event = mockk<ButtonInteractionEvent>(relaxed = true)
         every { event.componentId } returns id
@@ -75,7 +88,13 @@ class ViewTest {
         val edit = mockk<MessageEditCallbackAction>()
         every { edit.submit() } answers {
             acknowledged = true
-            CompletableFuture.completedFuture(mockk())
+            acknowledgement
+        }
+        val hookEdit = mockk<WebhookMessageEditAction<Message>>()
+        every { hookEdit.submit() } returns CompletableFuture.completedFuture(mockk())
+        every { event.hook.editMessageById(any<String>(), any<MessageEditData>()) } answers {
+            hookEdits += secondArg<MessageEditData>()
+            hookEdit
         }
         every { event.editMessage(any<MessageEditData>()) } answers {
             onEdit(firstArg())
@@ -238,6 +257,160 @@ class ViewTest {
         verify { stranger.reply("This isn't for you.") }
         verify(exactly = 0) { stranger.editMessage(any<MessageEditData>()) }
         assertTrue(target.edits.isEmpty())
+        runtime.close()
+    }
+
+    @Test
+    fun `cancellation thrown from a click does not freeze the view`() = runTest {
+        val runtime = runtime()
+        val view = runtime.view(1.minutes, null)
+        val value = mutableIntStateOf(0)
+        val initial = view.start {
+            Text("Ticks ${value.intValue}")
+            ActionRow { Button("Wait") { withTimeout(1_000) { awaitCancellation() } } }
+        }
+        val target = FakeTarget()
+        view.attach(target)
+        runCurrent()
+        val hookEdits = mutableListOf<MessageEditData>()
+
+        runtime.route(click(buttonIds(initial).single(), hookEdits = hookEdits))
+        value.intValue = 5
+        advanceTimeBy(2_000)
+        runCurrent()
+
+        assertTrue((target.edits + hookEdits).any { texts(it) == listOf("Ticks 5") })
+        advanceTimeBy(61_000)
+        runCurrent()
+        assertTrue(((target.edits + hookEdits).last().components.last() as ActionRow).buttons.single().isDisabled)
+        runtime.close()
+    }
+
+    @Test
+    fun `state changed while a click is being acknowledged still lands`() = runTest {
+        val runtime = runtime()
+        val view = runtime.view(14.minutes, null)
+        val value = mutableIntStateOf(0)
+        val initial = view.start {
+            Text("v ${value.intValue}")
+            ActionRow { Button("Go") {} }
+        }
+        val target = FakeTarget()
+        view.attach(target)
+        runCurrent()
+        val pending = CompletableFuture<InteractionHook>()
+        val hookEdits = mutableListOf<MessageEditData>()
+
+        val click = launch { runtime.route(click(buttonIds(initial).single(), acknowledgement = pending, hookEdits = hookEdits)) }
+        runCurrent()
+        value.intValue = 1
+        advanceTimeBy(100)
+        pending.complete(mockk())
+        advanceTimeBy(5_000)
+        runCurrent()
+
+        assertTrue((target.edits + hookEdits).any { texts(it) == listOf("v 1") })
+        click.join()
+        runtime.close()
+    }
+
+    @Test
+    fun `live updates continue while a clicked lambda is still running`() = runTest {
+        val runtime = runtime()
+        val view = runtime.view(14.minutes, null)
+        val value = mutableIntStateOf(0)
+        val initial = view.start {
+            Text("v ${value.intValue}")
+            ActionRow {
+                Button("Ask") {
+                    it.reply("asked").await()
+                    delay(5.minutes)
+                }
+            }
+        }
+        val target = FakeTarget()
+        view.attach(target)
+        runCurrent()
+
+        val click = launch { runtime.route(click(buttonIds(initial).single())) }
+        runCurrent()
+        value.intValue = 1
+        advanceTimeBy(2_000)
+        runCurrent()
+
+        assertTrue(target.edits.any { texts(it) == listOf("v 1") })
+        click.cancel()
+        runtime.close()
+    }
+
+    @Test
+    fun `closing after a failed first render disposes the composition`() = runTest {
+        val runtime = runtime()
+        val view = runtime.view(14.minutes, null)
+        var disposed = false
+        var ticks = 0
+
+        assertFailsWith<IllegalStateException> {
+            view.start {
+                LaunchedEffect(Unit) {
+                    repeat(50) {
+                        delay(100)
+                        ticks++
+                    }
+                }
+                DisposableEffect(Unit) { onDispose { disposed = true } }
+                Container { Button("Loose") {} }
+            }
+        }
+        view.close()
+        advanceTimeBy(1_000)
+        runCurrent()
+
+        assertTrue(disposed)
+        assertEquals(0, ticks)
+        runtime.close()
+    }
+
+    @Test
+    fun `render failure after a state change closes the view`() = runTest {
+        val runtime = runtime()
+        val view = runtime.view(14.minutes, null)
+        val count = mutableIntStateOf(5)
+        var disposed = false
+        view.start {
+            DisposableEffect(Unit) { onDispose { disposed = true } }
+            ActionRow { repeat(count.intValue) { Button("$it") {} } }
+        }
+        view.attach(FakeTarget())
+        runCurrent()
+
+        count.intValue = 6
+        advanceTimeBy(2_000)
+        runCurrent()
+
+        assertTrue(disposed)
+        runtime.close()
+    }
+
+    @Test
+    fun `click whose result cannot render is still acknowledged`() = runTest {
+        val runtime = runtime()
+        val view = runtime.view(14.minutes, null)
+        var disposed = false
+        val initial = view.start {
+            var count by remember { mutableIntStateOf(5) }
+            DisposableEffect(Unit) { onDispose { disposed = true } }
+            ActionRow { repeat(count) { Button("$it") { count++ } } }
+        }
+        view.attach(FakeTarget())
+        runCurrent()
+        val event = click(buttonIds(initial).first())
+
+        runtime.route(event)
+        runCurrent()
+
+        verify { event.deferEdit() }
+        assertTrue(disposed)
         runtime.close()
     }
 }
