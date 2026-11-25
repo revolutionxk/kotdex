@@ -6,6 +6,8 @@ import kotlin.reflect.KClass
 
 internal fun scan(packages: Array<out String>, loader: ClassLoader = Thread.currentThread().contextClassLoader): List<KClass<*>> =
     ClassGraph()
+        .enableClasspath()
+        .enableClassInfo()
         .enableAnnotationInfo()
         .acceptPackages(*packages)
         .scan()
