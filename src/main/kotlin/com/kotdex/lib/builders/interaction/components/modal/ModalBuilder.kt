@@ -107,9 +107,3 @@ fun modal(
 ): Modal {
     return ModalBuilder(customId, label).apply(block).build()
 }
-
-val modal = modal("a", "tem nao") {
-    textinput("a", "b", TextInputStyle.PARAGRAPH) {
-
-    }
-}
