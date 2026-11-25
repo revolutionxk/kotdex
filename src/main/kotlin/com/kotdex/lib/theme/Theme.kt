@@ -11,33 +11,33 @@ object Theme {
      *
      * @return The primary color of the embed.
      */
-    var primary: String = "#FF0000"
+    var primary: String = "#5865F2"
 
     /**
      * The success color of the embed.
      *
      * @return The success color of the embed.
      */
-    var success: String = "#0000FF"
+    var success: String = "#57F287"
 
     /**
      * The error color of the embed.
      *
      * @return The error color of the embed.
      */
-    var error: String = "#FFFF00"
+    var error: String = "#ED4245"
 
     /**
      * The warning color of the embed.
      *
      * @return The warning color of the embed.
      */
-    var warning: String = "#00FFFF"
+    var warning: String = "#FEE75C"
 
     /**
      * The info color of the embed.
      *
      * @return The info color of the embed.
      */
-    var info: String = "#FF00FF"
+    var info: String = "#3498DB"
 }
