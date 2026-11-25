@@ -17,7 +17,7 @@ annotation class StringSelectMenuDslMarker
 class StringSelectMenuBuilder(private val customId: String = "") : IBuilder<StringSelectMenu> {
     var placeholder: String? = null
     var requiredRange: IntRange = 1..1
-    var defaultValue: String = ""
+    var defaultValue: String? = null
     private val options: MutableList<SelectOption> = mutableListOf()
 
     /**
@@ -94,12 +94,13 @@ class StringSelectMenuBuilder(private val customId: String = "") : IBuilder<Stri
     }
 
     override fun build(): StringSelectMenu {
-        return StringSelectMenu.create(customId)
+        val menu = StringSelectMenu.create(customId)
             .setPlaceholder(placeholder)
             .setRequiredRange(requiredRange.first, requiredRange.last)
             .addOptions(options)
-            .setDefaultValues(defaultValue)
-            .build()
+        defaultValue?.let { menu.setDefaultValues(it) }
+
+        return menu.build()
     }
 }
 
