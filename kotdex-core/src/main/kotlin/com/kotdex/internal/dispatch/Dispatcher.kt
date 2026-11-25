@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.interaction.command.GenericContextInteractionE
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
 import net.dv8tion.jda.api.events.interaction.component.GenericSelectMenuInteractionEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload
 import java.util.concurrent.ConcurrentHashMap
 
@@ -22,8 +23,11 @@ internal class Dispatcher(
     private val metadata: MetadataStorage,
     private val injectables: (GenericEvent) -> List<Any>,
     private val onError: suspend (GenericEvent, Throwable) -> Unit,
+    prefix: String = "!",
+    caseSensitive: Boolean = false,
 ) {
     private val fired = ConcurrentHashMap.newKeySet<Handler>()
+    private val simple = SimpleCommands(metadata, prefix, caseSensitive, ::run)
 
     suspend fun dispatch(event: GenericEvent) {
         when (event) {
@@ -33,6 +37,7 @@ internal class Dispatcher(
             is ButtonInteractionEvent -> component(ComponentKind.BUTTON, event.componentId, event)
             is GenericSelectMenuInteractionEvent<*, *> -> component(ComponentKind.SELECT_MENU, event.componentId, event)
             is ModalInteractionEvent -> component(ComponentKind.MODAL, event.modalId, event)
+            is MessageReceivedEvent -> simple.handle(event)
         }
         listeners(event)
     }
