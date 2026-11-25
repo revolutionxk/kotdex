@@ -22,6 +22,9 @@ import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent
+import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent
+import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent
+import net.dv8tion.jda.api.events.interaction.component.GenericComponentInteractionCreateEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.interactions.Interaction
@@ -128,6 +131,11 @@ public class Client(configure: ClientOptions.() -> Unit = {}) {
                 add(event.user)
                 event.member?.let(::add)
                 (event.channel as? MessageChannel)?.let(::add)
+                when (event) {
+                    is MessageContextInteractionEvent -> add(event.target)
+                    is GenericComponentInteractionCreateEvent -> add(event.message)
+                    is ModalInteractionEvent -> event.message?.let(::add)
+                }
             }
             is MessageReceivedEvent -> {
                 add(event.message)

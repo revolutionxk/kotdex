@@ -1,5 +1,6 @@
 package com.kotdex
 
+import com.kotdex.annotations.ContextMenu
 import com.kotdex.annotations.Slash
 import io.mockk.every
 import io.mockk.mockk
@@ -7,10 +8,13 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.events.GenericEvent
+import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.events.session.ReadyEvent
 import net.dv8tion.jda.api.hooks.EventListener
+import net.dv8tion.jda.api.interactions.commands.Command
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,6 +26,13 @@ class Who(private val seen: CompletableDeferred<Client>) {
     @Slash("who", "Who runs this")
     fun who(client: Client) {
         seen.complete(client)
+    }
+}
+
+class Quote(private val seen: CompletableDeferred<Message>) {
+    @ContextMenu("Quote", type = Command.Type.MESSAGE)
+    fun quote(message: Message) {
+        seen.complete(message)
     }
 }
 
@@ -103,5 +114,21 @@ class ClientTest {
         attachedListeners().forEach { it.onEvent(slash("who")) }
 
         assertSame(client, withTimeout(5.seconds) { seen.await() })
+    }
+
+    @Test
+    fun `message context menus receive the target message`() = runBlocking {
+        val seen = CompletableDeferred<Message>()
+        client.register(Quote(seen))
+        val message = mockk<Message>()
+        val event = mockk<MessageContextInteractionEvent>(relaxed = true) {
+            every { name } returns "Quote"
+            every { commandType } returns Command.Type.MESSAGE
+            every { target } returns message
+        }
+
+        attachedListeners().forEach { it.onEvent(event) }
+
+        assertSame(message, withTimeout(5.seconds) { seen.await() })
     }
 }

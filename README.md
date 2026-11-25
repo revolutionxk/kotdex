@@ -77,7 +77,7 @@ class Moderation {
 
 Option types come from the Kotlin parameter type: `String`, `Int`, `Long`, `Double`, `Boolean`, `User`, `Member`, `Role`, `IMentionable`, `Message.Attachment`, any `GuildChannel` type and enums, which become choices. Nullable parameters and parameters with a default value are optional.
 
-Parameters without `@Option` are injected by type: the event, `Client`, `JDA`, `Guild`, `User`, `Member`, `MessageChannel` and `Message`.
+Parameters without `@Option` are injected by type: the event, `Client`, `JDA`, `Guild`, `User`, `Member`, `MessageChannel` and `Message`. `Message` is the command message for prefix commands, the target of message context menus and the message a component belongs to. `Guild` and `Member` are missing outside guilds, so declare them nullable in handlers that also run in direct messages.
 
 | Annotation | Purpose |
 |---|---|
@@ -129,7 +129,8 @@ fun Counter() {
 Composables: `Container`, `Text`, `Section`, `Thumbnail`, `Separator`, `MediaGallery`, `MediaItem`, `ActionRow`, `Button`, `LinkButton`, `StringSelect` and `EntitySelect`. `remember`, `LaunchedEffect`, `DisposableEffect` and composition locals work as in any Compose application.
 
 - `replyCompose` answers an interaction and `sendCompose` posts to a channel; both return a `ComposeView`.
-- Button and select lambdas receive the interaction event. When a lambda does not answer the interaction itself, the click is acknowledged with the updated message.
+- Button and select lambdas receive the interaction event. When a lambda does not answer the interaction itself, the click is acknowledged with the updated message. A lambda that is still running after 2.5 seconds has its click deferred, so open modals or reply before doing slow work.
+- Lambdas run on the single thread shared by all views. Use `await()` instead of `complete()`, and move blocking work to another dispatcher with `withContext(Dispatchers.IO)`.
 - State changes outside clicks, such as timers in `LaunchedEffect`, are batched into at most one edit per second.
 - A view expires 14 minutes after its last interaction: effects are cancelled and its components are disabled. `LocalView.current.close()` ends it earlier.
 - `LocalTheme` provides the colors from `Theme`; `KotdexTheme` overrides them for a subtree.
