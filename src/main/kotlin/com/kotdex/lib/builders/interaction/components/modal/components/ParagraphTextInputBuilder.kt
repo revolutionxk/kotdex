@@ -12,18 +12,7 @@ import net.dv8tion.jda.api.components.textinput.TextInputStyle
 class ParagraphTextInputBuilder(
     customId: String,
     label: String
-) : TextInputBuilder(customId, label, TextInputStyle.PARAGRAPH) {
-
-    /**
-     * Applies additional configuration to the paragraph text input builder.
-     *
-     * @param block a lambda expression containing additional configuration for the builder
-     * @return the modified builder instance
-     */
-    fun apply(block: ParagraphTextInputBuilder.() -> Unit): ParagraphTextInputBuilder {
-        return this.apply(block)
-    }
-}
+) : TextInputBuilder(customId, label, TextInputStyle.PARAGRAPH)
 
 /**
  * Creates a new paragraph text input field using the specified custom ID and label,

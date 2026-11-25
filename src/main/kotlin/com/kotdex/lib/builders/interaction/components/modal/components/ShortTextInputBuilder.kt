@@ -12,18 +12,7 @@ import net.dv8tion.jda.api.components.textinput.TextInputStyle
 class ShortTextInputBuilder(
     customId: String,
     label: String
-) : TextInputBuilder(customId, label, TextInputStyle.SHORT) {
-
-    /**
-     * Applies additional configuration to the short text input builder.
-     *
-     * @param block a lambda expression containing additional configuration for the builder
-     * @return the modified builder instance
-     */
-    fun apply(block: ShortTextInputBuilder.() -> Unit): ShortTextInputBuilder {
-        return this.apply(block)
-    }
-}
+) : TextInputBuilder(customId, label, TextInputStyle.SHORT)
 
 /**
  * Creates a new short text input field using the specified custom ID and label,
