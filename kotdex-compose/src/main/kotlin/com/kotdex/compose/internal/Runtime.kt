@@ -16,8 +16,6 @@ import kotlinx.coroutines.withContext
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.interaction.component.GenericComponentInteractionCreateEvent
 import net.dv8tion.jda.api.hooks.EventListener
-import java.util.Collections
-import java.util.WeakHashMap
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
@@ -36,7 +34,6 @@ internal class ComposeRuntime(val context: CoroutineContext) {
     val recomposer = Recomposer(scope.coroutineContext + clock)
 
     private val views = ConcurrentHashMap<String, LiveView>()
-    private val installed = Collections.synchronizedSet(Collections.newSetFromMap(WeakHashMap<JDA, Boolean>()))
     private val applyScheduled = AtomicBoolean()
     private val observer: ObserverHandle
 
@@ -62,13 +59,14 @@ internal class ComposeRuntime(val context: CoroutineContext) {
         views.remove(view.id)
     }
 
-    fun install(jda: JDA) {
-        if (!installed.add(jda)) return
-        jda.addEventListener(EventListener { event ->
-            if (event is GenericComponentInteractionCreateEvent && event.componentId.startsWith(VIEW_PREFIX)) {
-                scope.launch { route(event) }
-            }
-        })
+    val listener: EventListener = EventListener { event ->
+        if (event is GenericComponentInteractionCreateEvent && event.componentId.startsWith(VIEW_PREFIX)) {
+            scope.launch { route(event) }
+        }
+    }
+
+    fun install(jda: JDA) = synchronized(this) {
+        if (listener !in jda.registeredListeners) jda.addEventListener(listener)
     }
 
     suspend fun route(event: GenericComponentInteractionCreateEvent) = withContext(context) {
