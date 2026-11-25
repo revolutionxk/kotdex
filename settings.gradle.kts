@@ -18,3 +18,4 @@ rootProject.name = "kotdex"
 
 include("kotdex-core")
 include("kotdex-compose")
+include("kotdex-example")
