@@ -15,8 +15,11 @@ internal suspend fun defaultErrorHandler(event: GenericEvent, error: Throwable) 
     runCatching {
         when (event) {
             is IReplyCallback ->
-                if (event.isAcknowledged) event.hook.sendMessage(FAILURE).setEphemeral(true).await()
-                else event.reply(FAILURE).setEphemeral(true).await()
+                if (event.isAcknowledged) {
+                    event.hook.sendMessage(FAILURE).setEphemeral(true).await()
+                } else {
+                    event.reply(FAILURE).setEphemeral(true).await()
+                }
             is MessageReceivedEvent -> event.message.reply(FAILURE).await()
         }
     }.onFailure { logger.warn("Could not report the failure to the user", it) }

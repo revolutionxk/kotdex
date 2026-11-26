@@ -8,11 +8,7 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.full.callSuspendBy
 import kotlin.reflect.full.instanceParameter
 
-internal class InvocationContext(
-    val event: GenericEvent,
-    val arguments: Map<String, Any?>,
-    val injectables: List<Any>,
-)
+internal class InvocationContext(val event: GenericEvent, val arguments: Map<String, Any?>, val injectables: List<Any>)
 
 internal class Handler(
     val name: String,

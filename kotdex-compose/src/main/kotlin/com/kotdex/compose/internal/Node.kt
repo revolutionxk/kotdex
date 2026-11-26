@@ -77,7 +77,8 @@ internal class SectionNode : Node() {
 internal class AccessoryNode : Node() {
     override val label = "Section accessory"
     override fun render(context: RenderContext): SectionAccessoryComponent =
-        renderChildren<SectionAccessoryComponent>(context).singleOrNull() ?: error("A section accessory holds exactly one Button or Thumbnail")
+        renderChildren<SectionAccessoryComponent>(context).singleOrNull()
+            ?: error("A section accessory holds exactly one Button or Thumbnail")
 }
 
 internal class ThumbnailNode : Node() {
@@ -86,8 +87,7 @@ internal class ThumbnailNode : Node() {
     var spoiler = false
 
     override val label = "Thumbnail"
-    override fun render(context: RenderContext): Thumbnail =
-        Thumbnail.fromUrl(url).withDescription(description).withSpoiler(spoiler)
+    override fun render(context: RenderContext): Thumbnail = Thumbnail.fromUrl(url).withDescription(description).withSpoiler(spoiler)
 }
 
 internal class SeparatorNode : Node() {
@@ -151,13 +151,12 @@ internal class StringSelectNode : InteractiveNode() {
     var onSelect: suspend (StringSelectInteractionEvent) -> Unit = {}
 
     override val label = "StringSelect"
-    override fun render(context: RenderContext): StringSelectMenu =
-        StringSelectMenu.create(context.idOf(this))
-            .addOptions(options)
-            .setPlaceholder(placeholder)
-            .setRequiredRange(range.first, range.last)
-            .setDisabled(disabled || context.disabled)
-            .build()
+    override fun render(context: RenderContext): StringSelectMenu = StringSelectMenu.create(context.idOf(this))
+        .addOptions(options)
+        .setPlaceholder(placeholder)
+        .setRequiredRange(range.first, range.last)
+        .setDisabled(disabled || context.disabled)
+        .build()
 
     override suspend fun handle(event: GenericComponentInteractionCreateEvent) {
         if (event is StringSelectInteractionEvent) onSelect(event)
@@ -172,12 +171,11 @@ internal class EntitySelectNode : InteractiveNode() {
     var onSelect: suspend (EntitySelectInteractionEvent) -> Unit = {}
 
     override val label = "EntitySelect"
-    override fun render(context: RenderContext): EntitySelectMenu =
-        EntitySelectMenu.create(context.idOf(this), targets)
-            .setPlaceholder(placeholder)
-            .setRequiredRange(range.first, range.last)
-            .setDisabled(disabled || context.disabled)
-            .build()
+    override fun render(context: RenderContext): EntitySelectMenu = EntitySelectMenu.create(context.idOf(this), targets)
+        .setPlaceholder(placeholder)
+        .setRequiredRange(range.first, range.last)
+        .setDisabled(disabled || context.disabled)
+        .build()
 
     override suspend fun handle(event: GenericComponentInteractionCreateEvent) {
         if (event is EntitySelectInteractionEvent) onSelect(event)

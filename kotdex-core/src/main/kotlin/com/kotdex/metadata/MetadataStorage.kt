@@ -59,29 +59,41 @@ public class MetadataStorage internal constructor(injectables: Set<KClass<*>>) {
             error("Slash command /${entry.descriptor.name} is declared by ${it.handler.name} and ${entry.handler.name}")
         }
         firstOrNull { it.descriptor.path.isPrefixOf(path) || path.isPrefixOf(it.descriptor.path) }?.let {
-            error("Slash command /${it.descriptor.name} (${it.handler.name}) conflicts with /${entry.descriptor.name} (${entry.handler.name})")
+            error(
+                "Slash command /${it.descriptor.name} (${it.handler.name}) conflicts with /${entry.descriptor.name} (${entry.handler.name})",
+            )
         }
         return this + entry
     }
 
-    private fun List<Compiled<ContextMenuDescriptor>>.withContextMenu(entry: Compiled<ContextMenuDescriptor>): List<Compiled<ContextMenuDescriptor>> {
+    private fun List<Compiled<ContextMenuDescriptor>>.withContextMenu(
+        entry: Compiled<ContextMenuDescriptor>,
+    ): List<Compiled<ContextMenuDescriptor>> {
         firstOrNull { it.descriptor.name == entry.descriptor.name && it.descriptor.type == entry.descriptor.type }?.let {
             error("Context menu ${entry.descriptor.name} is declared by ${it.handler.name} and ${entry.handler.name}")
         }
         return this + entry
     }
 
-    private fun List<Compiled<ComponentDescriptor>>.withComponent(entry: Compiled<ComponentDescriptor>): List<Compiled<ComponentDescriptor>> {
-        firstOrNull { it.descriptor.kind == entry.descriptor.kind && it.descriptor.pattern.pattern == entry.descriptor.pattern.pattern }?.let {
+    private fun List<Compiled<ComponentDescriptor>>.withComponent(
+        entry: Compiled<ComponentDescriptor>,
+    ): List<Compiled<ComponentDescriptor>> {
+        firstOrNull {
+            it.descriptor.kind == entry.descriptor.kind && it.descriptor.pattern.pattern == entry.descriptor.pattern.pattern
+        }?.let {
             error("Component id ${entry.descriptor.pattern} is handled by ${it.handler.name} and ${entry.handler.name}")
         }
         return this + entry
     }
 
-    private fun List<Compiled<SimpleCommandDescriptor>>.withSimple(entry: Compiled<SimpleCommandDescriptor>): List<Compiled<SimpleCommandDescriptor>> {
+    private fun List<Compiled<SimpleCommandDescriptor>>.withSimple(
+        entry: Compiled<SimpleCommandDescriptor>,
+    ): List<Compiled<SimpleCommandDescriptor>> {
         val names = entry.descriptor.keys()
         firstOrNull { existing -> existing.descriptor.keys().any(names::contains) }?.let {
-            error("Simple command ${entry.descriptor.name} clashes with ${it.descriptor.name}: ${it.handler.name} and ${entry.handler.name}")
+            error(
+                "Simple command ${entry.descriptor.name} clashes with ${it.descriptor.name}: ${it.handler.name} and ${entry.handler.name}",
+            )
         }
         return this + entry
     }

@@ -197,8 +197,11 @@ internal class LiveView(
     private suspend fun report(event: GenericComponentInteractionCreateEvent, error: Throwable) {
         logger.error("Component handler failed in view {}", id, error)
         runCatching {
-            if (event.isAcknowledged) event.hook.sendMessage(FAILURE).setEphemeral(true).await()
-            else event.reply(FAILURE).setEphemeral(true).await()
+            if (event.isAcknowledged) {
+                event.hook.sendMessage(FAILURE).setEphemeral(true).await()
+            } else {
+                event.reply(FAILURE).setEphemeral(true).await()
+            }
         }
     }
 }

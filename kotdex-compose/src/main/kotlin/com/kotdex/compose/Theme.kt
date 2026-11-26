@@ -7,13 +7,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import com.kotdex.theme.Theme
 import java.awt.Color
 
-public data class ColorScheme(
-    val primary: Color,
-    val success: Color,
-    val error: Color,
-    val warning: Color,
-    val info: Color,
-) {
+public data class ColorScheme(val primary: Color, val success: Color, val error: Color, val warning: Color, val info: Color) {
     public companion object {
         public fun fromTheme(): ColorScheme = ColorScheme(
             primary = Color.decode(Theme.primary),

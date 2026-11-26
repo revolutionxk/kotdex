@@ -10,18 +10,10 @@ import java.time.temporal.TemporalAccessor
 public annotation class EmbedDslMarker
 
 @EmbedDslMarker
-public data class EmbedAuthorInfo(
-    var name: String? = null,
-    var url: String? = null,
-    var iconUrl: String? = null
-)
+public data class EmbedAuthorInfo(var name: String? = null, var url: String? = null, var iconUrl: String? = null)
 
 @EmbedDslMarker
-public data class EmbedFieldInfo(
-    var name: String,
-    var value: String,
-    var inline: Boolean = false
-)
+public data class EmbedFieldInfo(var name: String, var value: String, var inline: Boolean = false)
 
 @EmbedDslMarker
 public class EmbedBuilder(
@@ -30,7 +22,7 @@ public class EmbedBuilder(
     public var color: Color = Color.decode(Theme.success),
     public var thumbnailUrl: String? = null,
     public var imageUrl: String? = null,
-    public var timestamp: TemporalAccessor? = null
+    public var timestamp: TemporalAccessor? = null,
 ) : IBuilder<MessageEmbed> {
     private val embedBuilder = EmbedBuilder()
 
@@ -50,18 +42,15 @@ public class EmbedBuilder(
         embedBuilder.setFooter(text, iconUrl)
     }
 
-    override fun build(): MessageEmbed {
-        return embedBuilder.run {
-            setTitle(title)
-            setDescription(description)
-            setColor(color)
-            setThumbnail(thumbnailUrl)
-            setImage(imageUrl)
-            setTimestamp(timestamp)
-        }.build()
-    }
+    override fun build(): MessageEmbed = embedBuilder.run {
+        setTitle(title)
+        setDescription(description)
+        setColor(color)
+        setThumbnail(thumbnailUrl)
+        setImage(imageUrl)
+        setTimestamp(timestamp)
+    }.build()
 }
 
-public fun Embed(block: com.kotdex.builders.EmbedBuilder.() -> Unit): MessageEmbed {
-    return com.kotdex.builders.EmbedBuilder().apply(block).build()
-}
+@Suppress("ktlint:standard:function-naming")
+public fun Embed(block: com.kotdex.builders.EmbedBuilder.() -> Unit): MessageEmbed = com.kotdex.builders.EmbedBuilder().apply(block).build()

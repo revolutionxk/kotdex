@@ -16,11 +16,8 @@ public annotation class TextInputDslMarker
  * @property style the style of the text input field
  */
 @TextInputDslMarker
-public open class TextInputBuilder(
-    protected val customId: String,
-    protected val label: String,
-    protected val style: TextInputStyle
-) : IBuilder<Label> {
+public open class TextInputBuilder(protected val customId: String, protected val label: String, protected val style: TextInputStyle) :
+    IBuilder<Label> {
     public var placeholder: String? = null
     public var requiredLength: IntRange? = null
 
@@ -56,11 +53,5 @@ public open class TextInputBuilder(
  * @return the newly created text input field
  *
  */
-public fun textinput(
-    customId: String,
-    label: String,
-    type: TextInputStyle,
-    block: TextInputBuilder.() -> Unit
-): Label {
-    return TextInputBuilder(customId, label, type).apply(block).build()
-}
+public fun textinput(customId: String, label: String, type: TextInputStyle, block: TextInputBuilder.() -> Unit): Label =
+    TextInputBuilder(customId, label, type).apply(block).build()

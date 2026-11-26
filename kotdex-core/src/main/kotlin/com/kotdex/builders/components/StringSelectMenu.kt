@@ -1,9 +1,9 @@
 package com.kotdex.builders.components
 
 import com.kotdex.builders.IBuilder
-import net.dv8tion.jda.api.entities.emoji.Emoji
 import net.dv8tion.jda.api.components.selections.SelectOption
 import net.dv8tion.jda.api.components.selections.StringSelectMenu
+import net.dv8tion.jda.api.entities.emoji.Emoji
 
 @DslMarker
 public annotation class StringSelectMenuDslMarker
@@ -27,11 +27,7 @@ public class StringSelectMenuBuilder(private val customId: String = "") : IBuild
      * @param value The value to be returned when the option is selected.
      * @param default Whether this option should be selected by default.
      */
-    public fun option(
-        label: String,
-        value: String,
-        default: Boolean = false
-    ) {
+    public fun option(label: String, value: String, default: Boolean = false) {
         option(label, value, null, null, default)
     }
 
@@ -43,12 +39,7 @@ public class StringSelectMenuBuilder(private val customId: String = "") : IBuild
      * @param emoji The emoji to display for the option.
      * @param default Whether this option should be selected by default.
      */
-    public fun option(
-        label: String,
-        value: String,
-        emoji: Emoji,
-        default: Boolean = false
-    ) {
+    public fun option(label: String, value: String, emoji: Emoji, default: Boolean = false) {
         option(label, value, null, emoji, default)
     }
 
@@ -60,12 +51,7 @@ public class StringSelectMenuBuilder(private val customId: String = "") : IBuild
      * @param description The description to display for the option.
      * @param default Whether this option should be selected by default.
      */
-    public fun option(
-        label: String,
-        value: String,
-        description: String,
-        default: Boolean = false
-    ) {
+    public fun option(label: String, value: String, description: String, default: Boolean = false) {
         option(label, value, description, null, default)
     }
 
@@ -78,13 +64,7 @@ public class StringSelectMenuBuilder(private val customId: String = "") : IBuild
      * @param emoji The emoji to display for the option.
      * @param default Whether this option should be selected by default.
      */
-    public fun option(
-        label: String,
-        value: String,
-        description: String?,
-        emoji: Emoji?,
-        default: Boolean = false
-    ) {
+    public fun option(label: String, value: String, description: String?, emoji: Emoji?, default: Boolean = false) {
         val option = SelectOption.of(label, value)
             .withDescription(description)
             .withDefault(default)
@@ -121,6 +101,5 @@ public class StringSelectMenuBuilder(private val customId: String = "") : IBuild
  * }
  * ```
  */
-public fun stringselectmenu(customId: String, block: StringSelectMenuBuilder.() -> Unit): StringSelectMenu {
-    return StringSelectMenuBuilder(customId).apply(block).build()
-}
+public fun stringselectmenu(customId: String, block: StringSelectMenuBuilder.() -> Unit): StringSelectMenu =
+    StringSelectMenuBuilder(customId).apply(block).build()

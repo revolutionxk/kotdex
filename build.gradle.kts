@@ -1,5 +1,6 @@
 plugins {
     id("kotdex.documentation")
+    id("kotdex.spotless")
 }
 
 dependencies {

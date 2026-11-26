@@ -120,11 +120,13 @@ class RenderTest {
 
     @Test
     fun `select renders options`() {
-        val menu = (render {
-            ActionRow {
-                StringSelect(options = listOf(SelectOption.of("A", "a")), placeholder = "Pick") {}
-            }
-        }.single() as ActionRow).components.single() as StringSelectMenu
+        val menu = (
+            render {
+                ActionRow {
+                    StringSelect(options = listOf(SelectOption.of("A", "a")), placeholder = "Pick") {}
+                }
+            }.single() as ActionRow
+            ).components.single() as StringSelectMenu
 
         assertEquals("Pick", menu.placeholder)
         assertEquals(listOf("a"), menu.options.map { it.value })

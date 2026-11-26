@@ -14,22 +14,17 @@ public annotation class EntitySelectMenuDslMarker
  * @property type The select target to use for the menu.
  */
 @EntitySelectMenuDslMarker
-public class EntitySelectMenuBuilder(
-    private val customId: String,
-    private val type: SelectTarget
-) : IBuilder<EntitySelectMenu> {
+public class EntitySelectMenuBuilder(private val customId: String, private val type: SelectTarget) : IBuilder<EntitySelectMenu> {
     public var placeholder: String? = null
     public var requiredRange: IntRange = 1..1
 
     /**
      * Builds an [EntitySelectMenu] with the properties set on this builder.
      */
-    override fun build(): EntitySelectMenu {
-        return EntitySelectMenu.create(customId, type)
-            .setPlaceholder(placeholder)
-            .setRequiredRange(requiredRange.first, requiredRange.last)
-            .build()
-    }
+    override fun build(): EntitySelectMenu = EntitySelectMenu.create(customId, type)
+        .setPlaceholder(placeholder)
+        .setRequiredRange(requiredRange.first, requiredRange.last)
+        .build()
 }
 
 /**
@@ -51,10 +46,5 @@ public class EntitySelectMenuBuilder(
  * the builder methods to be called to set additional properties for the menu.
  * @return The created [EntitySelectMenu].
  */
-public fun entityselectmenu(
-    customId: String,
-    type: SelectTarget,
-    block: EntitySelectMenuBuilder.() -> Unit
-): EntitySelectMenu {
-    return EntitySelectMenuBuilder(customId, type).apply(block).build()
-}
+public fun entityselectmenu(customId: String, type: SelectTarget, block: EntitySelectMenuBuilder.() -> Unit): EntitySelectMenu =
+    EntitySelectMenuBuilder(customId, type).apply(block).build()

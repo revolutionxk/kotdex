@@ -1,9 +1,9 @@
 package com.kotdex.builders.messages
 
 import com.kotdex.builders.IBuilder
+import net.dv8tion.jda.api.components.MessageTopLevelComponent
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
-import net.dv8tion.jda.api.components.MessageTopLevelComponent
 import net.dv8tion.jda.api.utils.FileUpload
 import net.dv8tion.jda.api.utils.messages.MessageData
 

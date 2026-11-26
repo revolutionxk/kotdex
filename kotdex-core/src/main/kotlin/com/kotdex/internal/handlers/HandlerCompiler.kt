@@ -150,11 +150,7 @@ internal class HandlerCompiler(private val injectables: Set<KClass<*>>) {
             return Compiled(EventDescriptor(type, once), handler)
         }
 
-        fun compile(
-            event: Class<*>,
-            allowOptions: Boolean = false,
-            allowRest: Boolean = false,
-        ): Pair<Handler, List<OptionDescriptor>> {
+        fun compile(event: Class<*>, allowOptions: Boolean = false, allowRest: Boolean = false): Pair<Handler, List<OptionDescriptor>> {
             function.isAccessible = true
             var eventType = event
             val resolvers = mutableListOf<ParameterResolver>()

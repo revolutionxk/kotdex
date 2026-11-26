@@ -29,10 +29,7 @@ class Live {
     }
 
     @Slash("countdown", "Counts down in place")
-    suspend fun countdown(
-        event: SlashCommandInteractionEvent,
-        @Option("seconds", "How long", min = 1.0, max = 60.0) seconds: Int = 10,
-    ) {
+    suspend fun countdown(event: SlashCommandInteractionEvent, @Option("seconds", "How long", min = 1.0, max = 60.0) seconds: Int = 10) {
         event.replyCompose { Countdown(seconds) }
     }
 }

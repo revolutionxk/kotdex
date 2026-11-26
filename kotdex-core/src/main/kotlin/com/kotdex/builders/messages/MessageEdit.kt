@@ -38,6 +38,5 @@ public class MessageEdit : MessageData<MessageEditData>() {
  * @param block A lambda function that takes a MessageEditBuilder object and configures it.
  * @return The MessageEditData instance built by the MessageEditBuilder object.
  */
-public fun MessageEdit(block: MessageEdit.() -> Unit): MessageEditData {
-    return MessageEdit().apply(block).build()
-}
+@Suppress("ktlint:standard:function-naming")
+public fun MessageEdit(block: MessageEdit.() -> Unit): MessageEditData = MessageEdit().apply(block).build()

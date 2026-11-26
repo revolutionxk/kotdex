@@ -38,10 +38,7 @@ class General {
     }
 
     @Slash("roll", "Roll a die")
-    suspend fun roll(
-        event: SlashCommandInteractionEvent,
-        @Option("sides", "Number of sides", min = 2.0, max = 100.0) sides: Int = 6,
-    ) {
+    suspend fun roll(event: SlashCommandInteractionEvent, @Option("sides", "Number of sides", min = 2.0, max = 100.0) sides: Int = 6) {
         event.reply("You rolled ${Random.nextInt(1, sides + 1)}").await()
     }
 

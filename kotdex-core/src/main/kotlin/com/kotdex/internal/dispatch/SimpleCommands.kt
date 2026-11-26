@@ -30,8 +30,7 @@ internal class SimpleCommands(
         run(command.handler, event, arguments)
     }
 
-    private fun SimpleCommandDescriptor.answersTo(name: String) =
-        (aliases + this.name).any { it.equals(name, ignoreCase = !caseSensitive) }
+    private fun SimpleCommandDescriptor.answersTo(name: String) = (aliases + this.name).any { it.equals(name, ignoreCase = !caseSensitive) }
 
     private fun parse(command: Compiled<SimpleCommandDescriptor>, tokens: List<String>, event: MessageReceivedEvent): Map<String, Any?>? {
         val arguments = mutableMapOf<String, Any?>()

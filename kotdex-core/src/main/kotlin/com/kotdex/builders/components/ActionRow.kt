@@ -17,9 +17,7 @@ import net.dv8tion.jda.api.components.actionrow.ActionRowChildComponent
  * @param components the [ActionRowChildComponent] objects to add to the row.
  * @return the created [ActionRow] object.
  */
-public fun row(vararg components: ActionRowChildComponent): ActionRow {
-    return ActionRow.of(components.asList())
-}
+public fun row(vararg components: ActionRowChildComponent): ActionRow = ActionRow.of(components.asList())
 
 /**
  * Creates an [ActionRow] containing the [ActionRowChildComponent] objects in this collection.

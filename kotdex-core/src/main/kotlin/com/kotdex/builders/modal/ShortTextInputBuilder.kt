@@ -9,10 +9,7 @@ import net.dv8tion.jda.api.components.textinput.TextInputStyle
  * @property customId a unique identifier for the text input field
  * @property label a label to display alongside the text input field
  */
-public class ShortTextInputBuilder(
-    customId: String,
-    label: String
-) : TextInputBuilder(customId, label, TextInputStyle.SHORT)
+public class ShortTextInputBuilder(customId: String, label: String) : TextInputBuilder(customId, label, TextInputStyle.SHORT)
 
 /**
  * Creates a new short text input field using the specified custom ID and label,
@@ -33,10 +30,5 @@ public class ShortTextInputBuilder(
  * @return the newly created text input field
  *
  */
-public fun shorttextinput(
-    customId: String,
-    label: String,
-    block: ShortTextInputBuilder.() -> Unit
-): Label {
-    return ShortTextInputBuilder(customId, label).apply(block).build()
-}
+public fun shorttextinput(customId: String, label: String, block: ShortTextInputBuilder.() -> Unit): Label =
+    ShortTextInputBuilder(customId, label).apply(block).build()

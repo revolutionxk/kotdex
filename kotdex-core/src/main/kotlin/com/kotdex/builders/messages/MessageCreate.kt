@@ -36,6 +36,5 @@ public class MessageCreate : MessageData<MessageCreateData>() {
  * @param block A lambda function that takes a MessageCreateBuilder object and configures it.
  * @return The MessageCreateData instance built by the MessageCreateBuilder object.
  */
-public fun MessageCreate(block: MessageCreate.() -> Unit): MessageCreateData {
-    return MessageCreate().apply(block).build()
-}
+@Suppress("ktlint:standard:function-naming")
+public fun MessageCreate(block: MessageCreate.() -> Unit): MessageCreateData = MessageCreate().apply(block).build()

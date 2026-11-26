@@ -40,11 +40,10 @@ internal suspend fun <E : GenericEvent> JDA.awaitEvent(type: Class<E>, timeout: 
         }
     }
 
-public suspend fun IModalCallback.awaitModal(modal: Modal, timeout: Duration = 5.minutes): ModalInteractionEvent =
-    coroutineScope {
-        val submission = async(start = CoroutineStart.UNDISPATCHED) {
-            jda.await<ModalInteractionEvent>(timeout) { it.modalId == modal.id && it.user.idLong == user.idLong }
-        }
-        replyModal(modal).await()
-        submission.await()
+public suspend fun IModalCallback.awaitModal(modal: Modal, timeout: Duration = 5.minutes): ModalInteractionEvent = coroutineScope {
+    val submission = async(start = CoroutineStart.UNDISPATCHED) {
+        jda.await<ModalInteractionEvent>(timeout) { it.modalId == modal.id && it.user.idLong == user.idLong }
     }
+    replyModal(modal).await()
+    submission.await()
+}

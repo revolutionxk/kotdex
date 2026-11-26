@@ -9,10 +9,7 @@ import net.dv8tion.jda.api.components.textinput.TextInputStyle
  * @property customId a unique identifier for the text input field
  * @property label a label to display alongside the text input field
  */
-public class ParagraphTextInputBuilder(
-    customId: String,
-    label: String
-) : TextInputBuilder(customId, label, TextInputStyle.PARAGRAPH)
+public class ParagraphTextInputBuilder(customId: String, label: String) : TextInputBuilder(customId, label, TextInputStyle.PARAGRAPH)
 
 /**
  * Creates a new paragraph text input field using the specified custom ID and label,
@@ -33,10 +30,5 @@ public class ParagraphTextInputBuilder(
  * @return the newly created text input field
  *
  */
-public fun paragraphtextinput(
-    customId: String,
-    label: String,
-    block: ParagraphTextInputBuilder.() -> Unit
-): Label {
-    return ParagraphTextInputBuilder(customId, label).apply(block).build()
-}
+public fun paragraphtextinput(customId: String, label: String, block: ParagraphTextInputBuilder.() -> Unit): Label =
+    ParagraphTextInputBuilder(customId, label).apply(block).build()

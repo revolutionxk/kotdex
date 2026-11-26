@@ -18,10 +18,7 @@ public annotation class ModalDslBuilder
  */
 
 @ModalDslBuilder
-public class ModalBuilder(
-    public var customId: String,
-    public var label: String
-) : IBuilder<Modal> {
+public class ModalBuilder(public var customId: String, public var label: String) : IBuilder<Modal> {
     private val textInputs: MutableList<Label> = mutableListOf()
 
     /**
@@ -32,12 +29,7 @@ public class ModalBuilder(
      * @param type the [TextInputStyle] for the text input.
      * @param block a lambda expression used to configure the [TextInputBuilder].
      */
-    public fun textinput(
-        customId: String,
-        label: String,
-        type: TextInputStyle,
-        block: TextInputBuilder.() -> Unit
-    ) {
+    public fun textinput(customId: String, label: String, type: TextInputStyle, block: TextInputBuilder.() -> Unit) {
         val textInput = TextInputBuilder(customId, label, type).apply(block).build()
 
         textInputs.add(textInput)
@@ -50,11 +42,7 @@ public class ModalBuilder(
      * @param label the label for the text input.
      * @param block a lambda expression used to configure the [TextInputBuilder].
      */
-    public fun shorttextinput(
-        customId: String,
-        label: String,
-        block: TextInputBuilder.() -> Unit
-    ) {
+    public fun shorttextinput(customId: String, label: String, block: TextInputBuilder.() -> Unit) {
         textinput(customId, label, TextInputStyle.SHORT, block)
     }
 
@@ -65,19 +53,13 @@ public class ModalBuilder(
      * @param label the label for the text input.
      * @param block a lambda expression used to configure the [TextInputBuilder].
      */
-    public fun paragraphtextinput(
-        customId: String,
-        label: String,
-        block: TextInputBuilder.() -> Unit
-    ) {
+    public fun paragraphtextinput(customId: String, label: String, block: TextInputBuilder.() -> Unit) {
         textinput(customId, label, TextInputStyle.PARAGRAPH, block)
     }
 
-    override fun build(): Modal {
-        return Modal.create(customId, label)
-            .addComponents(textInputs)
-            .build()
-    }
+    override fun build(): Modal = Modal.create(customId, label)
+        .addComponents(textInputs)
+        .build()
 }
 
 /**
@@ -100,10 +82,5 @@ public class ModalBuilder(
  * @param block a lambda expression used to configure the [ModalBuilder].
  * @return the created [Modal] object.
  */
-public fun modal(
-    customId: String,
-    label: String,
-    block: ModalBuilder.() -> Unit
-): Modal {
-    return ModalBuilder(customId, label).apply(block).build()
-}
+public fun modal(customId: String, label: String, block: ModalBuilder.() -> Unit): Modal =
+    ModalBuilder(customId, label).apply(block).build()

@@ -97,7 +97,9 @@ public class Client(configure: ClientOptions.() -> Unit = {}) {
 
     public suspend fun login(token: String): JDA {
         if (metadata.simpleCommands.isNotEmpty() && GatewayIntent.MESSAGE_CONTENT !in options.intents) {
-            logger.warn("Prefix commands are registered but GatewayIntent.MESSAGE_CONTENT is not enabled; guild messages will arrive without content")
+            logger.warn(
+                "Prefix commands are registered but GatewayIntent.MESSAGE_CONTENT is not enabled; guild messages will arrive without content",
+            )
         }
         val jda = withContext(Dispatchers.IO) {
             configure(JDABuilder.createDefault(token, options.intents)).build().also { instance = it }.awaitReady()

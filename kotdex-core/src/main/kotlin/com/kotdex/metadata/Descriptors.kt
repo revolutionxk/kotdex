@@ -34,23 +34,13 @@ public class SlashDescriptor internal constructor(
     public val name: String get() = path.joinToString(" ")
 }
 
-public class SlashGroupDescriptor internal constructor(
-    public val name: String,
-    public val description: String,
-    public val root: String?,
-)
+public class SlashGroupDescriptor internal constructor(public val name: String, public val description: String, public val root: String?)
 
-public class ContextMenuDescriptor internal constructor(
-    public val name: String,
-    public val type: Command.Type,
-)
+public class ContextMenuDescriptor internal constructor(public val name: String, public val type: Command.Type)
 
 public enum class ComponentKind { BUTTON, SELECT_MENU, MODAL }
 
-public class ComponentDescriptor internal constructor(
-    public val kind: ComponentKind,
-    public val pattern: Regex,
-)
+public class ComponentDescriptor internal constructor(public val kind: ComponentKind, public val pattern: Regex)
 
 public class SimpleCommandDescriptor internal constructor(
     public val name: String,
@@ -62,7 +52,4 @@ public class SimpleCommandDescriptor internal constructor(
         (listOf("$prefix$name") + options.map { if (it.required) "<${it.name}>" else "[${it.name}]" }).joinToString(" ")
 }
 
-public class EventDescriptor internal constructor(
-    public val type: KClass<out GenericEvent>,
-    public val once: Boolean,
-)
+public class EventDescriptor internal constructor(public val type: KClass<out GenericEvent>, public val once: Boolean)
