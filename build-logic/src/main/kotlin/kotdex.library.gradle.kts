@@ -6,9 +6,6 @@ plugins {
     `maven-publish`
 }
 
-group = "com.kotdex"
-version = "1.0-SNAPSHOT"
-
 val libs = the<VersionCatalogsExtension>().named("libs")
 
 java {
@@ -17,18 +14,23 @@ java {
     withSourcesJar()
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 17
+}
+
 kotlin {
     explicitApi()
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
+        freeCompilerArgs.add("-Xjdk-release=17")
     }
 }
 
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.findLibrary("mockk").get())
-    testImplementation(libs.findLibrary("coroutines-test").get())
-    testRuntimeOnly(libs.findLibrary("junit-launcher").get())
+    testImplementation(libs.findLibrary("kotlinx-coroutines-test").get())
+    testRuntimeOnly(libs.findLibrary("junit-platform-launcher").get())
     testRuntimeOnly(libs.findLibrary("logback").get())
 }
 

@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(libs.jda)
-    api(libs.coroutines.core)
+    api(libs.kotlinx.coroutines.core)
     implementation(kotlin("reflect"))
     implementation(libs.classgraph)
 }
