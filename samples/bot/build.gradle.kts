@@ -10,3 +10,7 @@ dependencies {
 application {
     mainClass = "com.kotdex.example.MainKt"
 }
+
+tasks.named<JavaExec>("run") {
+    workingDir = rootDir
+}

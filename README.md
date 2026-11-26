@@ -137,8 +137,11 @@ Composables: `Container`, `Text`, `Section`, `Thumbnail`, `Separator`, `MediaGal
 
 ## Example
 
+Copy `.env.example` to `.env` in the repository root and fill in the bot token. `DISCORD_GUILD` is optional: with a server id, commands are registered on that server and show up immediately. Environment variables with the same names take precedence over the file.
+
 ```shell
-DISCORD_TOKEN=... DISCORD_GUILD=... ./gradlew :samples:bot:run
+cp .env.example .env
+./gradlew :samples:bot:run
 ```
 
 ## Development

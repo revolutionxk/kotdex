@@ -7,9 +7,9 @@ suspend fun main() {
     val client = Client {
         intents += GatewayIntent.MESSAGE_CONTENT
         prefix = "!"
-        System.getenv("DISCORD_GUILD")?.toLongOrNull()?.let(guilds::add)
+        env("DISCORD_GUILD")?.toLongOrNull()?.let(guilds::add)
     }
 
     client.scan("com.kotdex.example")
-    client.login(System.getenv("DISCORD_TOKEN") ?: error("Set DISCORD_TOKEN"))
+    client.login(env("DISCORD_TOKEN") ?: error("Set DISCORD_TOKEN in .env or in the environment"))
 }
