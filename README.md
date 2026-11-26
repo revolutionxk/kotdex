@@ -140,3 +140,19 @@ Composables: `Container`, `Text`, `Section`, `Thumbnail`, `Separator`, `MediaGal
 ```shell
 DISCORD_TOKEN=... DISCORD_GUILD=... ./gradlew :samples:bot:run
 ```
+
+## Development
+
+```shell
+./gradlew build
+```
+
+`build` runs the tests, the ktlint check through Spotless and the ABI check against `api/*.api`.
+
+- `./gradlew spotlessApply` formats the sources.
+- `./gradlew updateKotlinAbi` records an intentional change to the public API.
+- `./gradlew dokkaGenerate` writes the API reference to `build/dokka/html`.
+
+## License
+
+Kotdex is released under the [Apache License 2.0](LICENSE).
