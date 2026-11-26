@@ -20,6 +20,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "kotdex"
 
-include("kotdex-core")
-include("kotdex-compose")
-include("kotdex-example")
+include(":kotdex-core")
+include(":kotdex-compose")
+include(":samples:bot")

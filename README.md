@@ -10,7 +10,7 @@
 |---|---|
 | `kotdex-core` | `Client`, annotations, option mapping, guards, autocomplete, prefix commands, builders, coroutine helpers |
 | `kotdex-compose` | Compose runtime for Components V2 messages that update themselves when state changes |
-| `kotdex-example` | A runnable bot using both modules |
+| `samples/bot` | A runnable bot using both modules |
 
 Requires Java 17 or newer.
 
@@ -138,5 +138,5 @@ Composables: `Container`, `Text`, `Section`, `Thumbnail`, `Separator`, `MediaGal
 ## Example
 
 ```shell
-DISCORD_TOKEN=... DISCORD_GUILD=... ./gradlew :kotdex-example:run
+DISCORD_TOKEN=... DISCORD_GUILD=... ./gradlew :samples:bot:run
 ```
