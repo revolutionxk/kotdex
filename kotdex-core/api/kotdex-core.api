@@ -1,0 +1,481 @@
+public final class com/kotdex/Client {
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getJda ()Lnet/dv8tion/jda/api/JDA;
+	public final fun getMetadata ()Lcom/kotdex/metadata/MetadataStorage;
+	public final fun getScope ()Lkotlinx/coroutines/CoroutineScope;
+	public final fun initApplicationCommands (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun listen (Ljava/lang/Class;ZLkotlin/jvm/functions/Function2;)V
+	public final fun login (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun register ([Ljava/lang/Object;)V
+	public final fun scan ([Ljava/lang/String;)V
+	public final fun shutdown ()V
+}
+
+public abstract interface class com/kotdex/ClientExtension {
+	public abstract fun install (Lnet/dv8tion/jda/api/JDABuilder;)V
+}
+
+public final class com/kotdex/ClientOptions {
+	public final fun getCaseSensitive ()Z
+	public final fun getGuilds ()Ljava/util/Set;
+	public final fun getIntents ()Ljava/util/Set;
+	public final fun getPrefix ()Ljava/lang/String;
+	public final fun getRegisterCommands ()Z
+	public final fun jda (Lkotlin/jvm/functions/Function1;)V
+	public final fun onError (Lkotlin/jvm/functions/Function3;)V
+	public final fun setCaseSensitive (Z)V
+	public final fun setPrefix (Ljava/lang/String;)V
+	public final fun setRegisterCommands (Z)V
+}
+
+public abstract interface annotation class com/kotdex/annotations/ButtonComponent : java/lang/annotation/Annotation {
+	public abstract fun id ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/kotdex/annotations/ContextMenu : java/lang/annotation/Annotation {
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun type ()Lnet/dv8tion/jda/api/interactions/commands/Command$Type;
+}
+
+public abstract interface annotation class com/kotdex/annotations/Discord : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/kotdex/annotations/Guarded : java/lang/annotation/Annotation {
+	public abstract fun value ()[Ljava/lang/Class;
+}
+
+public abstract interface annotation class com/kotdex/annotations/ModalComponent : java/lang/annotation/Annotation {
+	public abstract fun id ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/kotdex/annotations/On : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/kotdex/annotations/Once : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/kotdex/annotations/Option : java/lang/annotation/Annotation {
+	public abstract fun autocomplete ()Ljava/lang/Class;
+	public abstract fun description ()Ljava/lang/String;
+	public abstract fun max ()D
+	public abstract fun maxLength ()I
+	public abstract fun min ()D
+	public abstract fun minLength ()I
+	public abstract fun name ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/kotdex/annotations/SelectMenuComponent : java/lang/annotation/Annotation {
+	public abstract fun id ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/kotdex/annotations/SimpleCommand : java/lang/annotation/Annotation {
+	public abstract fun aliases ()[Ljava/lang/String;
+	public abstract fun description ()Ljava/lang/String;
+	public abstract fun name ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/kotdex/annotations/Slash : java/lang/annotation/Annotation {
+	public abstract fun description ()Ljava/lang/String;
+	public abstract fun guildOnly ()Z
+	public abstract fun guilds ()[J
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun nsfw ()Z
+	public abstract fun permissions ()[Lnet/dv8tion/jda/api/Permission;
+}
+
+public abstract interface annotation class com/kotdex/annotations/SlashGroup : java/lang/annotation/Annotation {
+	public abstract fun description ()Ljava/lang/String;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun root ()Ljava/lang/String;
+}
+
+public abstract interface class com/kotdex/autocomplete/Autocompleter {
+	public abstract fun complete (Lnet/dv8tion/jda/api/events/interaction/command/CommandAutoCompleteInteractionEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/kotdex/builders/EmbedAuthorInfo {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/kotdex/builders/EmbedAuthorInfo;
+	public static synthetic fun copy$default (Lcom/kotdex/builders/EmbedAuthorInfo;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/kotdex/builders/EmbedAuthorInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIconUrl ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun setIconUrl (Ljava/lang/String;)V
+	public final fun setName (Ljava/lang/String;)V
+	public final fun setUrl (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/kotdex/builders/EmbedBuilder : com/kotdex/builders/IBuilder {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/awt/Color;Ljava/lang/String;Ljava/lang/String;Ljava/time/temporal/TemporalAccessor;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/awt/Color;Ljava/lang/String;Ljava/lang/String;Ljava/time/temporal/TemporalAccessor;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun author (Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lnet/dv8tion/jda/api/entities/MessageEmbed;
+	public final fun field (Lkotlin/jvm/functions/Function1;)V
+	public final fun footer (Ljava/lang/String;Ljava/lang/String;)V
+	public static synthetic fun footer$default (Lcom/kotdex/builders/EmbedBuilder;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)V
+	public final fun getColor ()Ljava/awt/Color;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getImageUrl ()Ljava/lang/String;
+	public final fun getThumbnailUrl ()Ljava/lang/String;
+	public final fun getTimestamp ()Ljava/time/temporal/TemporalAccessor;
+	public final fun getTitle ()Ljava/lang/String;
+	public final fun setColor (Ljava/awt/Color;)V
+	public final fun setDescription (Ljava/lang/String;)V
+	public final fun setImageUrl (Ljava/lang/String;)V
+	public final fun setThumbnailUrl (Ljava/lang/String;)V
+	public final fun setTimestamp (Ljava/time/temporal/TemporalAccessor;)V
+	public final fun setTitle (Ljava/lang/String;)V
+}
+
+public abstract interface annotation class com/kotdex/builders/EmbedDslMarker : java/lang/annotation/Annotation {
+}
+
+public final class com/kotdex/builders/EmbedFieldInfo {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Z)Lcom/kotdex/builders/EmbedFieldInfo;
+	public static synthetic fun copy$default (Lcom/kotdex/builders/EmbedFieldInfo;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Lcom/kotdex/builders/EmbedFieldInfo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInline ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun setInline (Z)V
+	public final fun setName (Ljava/lang/String;)V
+	public final fun setValue (Ljava/lang/String;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/kotdex/builders/EmbedKt {
+	public static final fun Embed (Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/entities/MessageEmbed;
+}
+
+public abstract interface class com/kotdex/builders/IBuilder {
+	public abstract fun build ()Ljava/lang/Object;
+}
+
+public final class com/kotdex/builders/components/ActionRowKt {
+	public static final fun row (Ljava/util/Collection;)Lnet/dv8tion/jda/api/components/actionrow/ActionRow;
+	public static final fun row ([Lnet/dv8tion/jda/api/components/actionrow/ActionRowChildComponent;)Lnet/dv8tion/jda/api/components/actionrow/ActionRow;
+}
+
+public final class com/kotdex/builders/components/ButtonsKt {
+	public static final fun button (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;Lnet/dv8tion/jda/api/components/buttons/ButtonStyle;Z)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static synthetic fun button$default (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;Lnet/dv8tion/jda/api/components/buttons/ButtonStyle;ZILjava/lang/Object;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static final fun danger (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static synthetic fun danger$default (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ILjava/lang/Object;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static final fun link (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static synthetic fun link$default (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ILjava/lang/Object;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static final fun primary (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static synthetic fun primary$default (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ILjava/lang/Object;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static final fun secondary (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static synthetic fun secondary$default (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ILjava/lang/Object;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static final fun success (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;)Lnet/dv8tion/jda/api/components/buttons/Button;
+	public static synthetic fun success$default (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ILjava/lang/Object;)Lnet/dv8tion/jda/api/components/buttons/Button;
+}
+
+public final class com/kotdex/builders/components/EntitySelectMenuBuilder : com/kotdex/builders/IBuilder {
+	public fun <init> (Ljava/lang/String;Lnet/dv8tion/jda/api/components/selections/EntitySelectMenu$SelectTarget;)V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lnet/dv8tion/jda/api/components/selections/EntitySelectMenu;
+	public final fun getPlaceholder ()Ljava/lang/String;
+	public final fun getRequiredRange ()Lkotlin/ranges/IntRange;
+	public final fun setPlaceholder (Ljava/lang/String;)V
+	public final fun setRequiredRange (Lkotlin/ranges/IntRange;)V
+}
+
+public abstract interface annotation class com/kotdex/builders/components/EntitySelectMenuDslMarker : java/lang/annotation/Annotation {
+}
+
+public final class com/kotdex/builders/components/EntitySelectMenuKt {
+	public static final fun entityselectmenu (Ljava/lang/String;Lnet/dv8tion/jda/api/components/selections/EntitySelectMenu$SelectTarget;Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/components/selections/EntitySelectMenu;
+}
+
+public final class com/kotdex/builders/components/StringSelectMenuBuilder : com/kotdex/builders/IBuilder {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lnet/dv8tion/jda/api/components/selections/StringSelectMenu;
+	public final fun getDefaultValue ()Ljava/lang/String;
+	public final fun getPlaceholder ()Ljava/lang/String;
+	public final fun getRequiredRange ()Lkotlin/ranges/IntRange;
+	public final fun option (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;Z)V
+	public final fun option (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V
+	public final fun option (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;Z)V
+	public final fun option (Ljava/lang/String;Ljava/lang/String;Z)V
+	public static synthetic fun option$default (Lcom/kotdex/builders/components/StringSelectMenuBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ZILjava/lang/Object;)V
+	public static synthetic fun option$default (Lcom/kotdex/builders/components/StringSelectMenuBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public static synthetic fun option$default (Lcom/kotdex/builders/components/StringSelectMenuBuilder;Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/entities/emoji/Emoji;ZILjava/lang/Object;)V
+	public static synthetic fun option$default (Lcom/kotdex/builders/components/StringSelectMenuBuilder;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun setDefaultValue (Ljava/lang/String;)V
+	public final fun setPlaceholder (Ljava/lang/String;)V
+	public final fun setRequiredRange (Lkotlin/ranges/IntRange;)V
+}
+
+public abstract interface annotation class com/kotdex/builders/components/StringSelectMenuDslMarker : java/lang/annotation/Annotation {
+}
+
+public final class com/kotdex/builders/components/StringSelectMenuKt {
+	public static final fun stringselectmenu (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/components/selections/StringSelectMenu;
+}
+
+public final class com/kotdex/builders/messages/MessageCreate : com/kotdex/builders/messages/MessageData {
+	public fun <init> ()V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lnet/dv8tion/jda/api/utils/messages/MessageCreateData;
+	public synthetic fun build ()Lnet/dv8tion/jda/api/utils/messages/MessageData;
+}
+
+public final class com/kotdex/builders/messages/MessageCreateKt {
+	public static final fun MessageCreate (Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/utils/messages/MessageCreateData;
+}
+
+public abstract class com/kotdex/builders/messages/MessageData : com/kotdex/builders/IBuilder {
+	public fun <init> ()V
+	public synthetic fun build ()Ljava/lang/Object;
+	public abstract fun build ()Lnet/dv8tion/jda/api/utils/messages/MessageData;
+	public final fun getComponents ()Ljava/util/List;
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getEmbeds ()Ljava/util/List;
+	public final fun getFiles ()Ljava/util/List;
+	public final fun getMentions ()Ljava/util/List;
+	public final fun getTts ()Z
+	public final fun setComponents (Ljava/util/List;)V
+	public final fun setContent (Ljava/lang/String;)V
+	public final fun setEmbeds (Ljava/util/List;)V
+	public final fun setFiles (Ljava/util/List;)V
+	public final fun setMentions (Ljava/util/List;)V
+	public final fun setTts (Z)V
+}
+
+public final class com/kotdex/builders/messages/MessageEdit : com/kotdex/builders/messages/MessageData {
+	public fun <init> ()V
+	public synthetic fun build ()Ljava/lang/Object;
+	public synthetic fun build ()Lnet/dv8tion/jda/api/utils/messages/MessageData;
+	public fun build ()Lnet/dv8tion/jda/api/utils/messages/MessageEditData;
+}
+
+public final class com/kotdex/builders/messages/MessageEditKt {
+	public static final fun MessageEdit (Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/utils/messages/MessageEditData;
+}
+
+public final class com/kotdex/builders/modal/ModalBuilder : com/kotdex/builders/IBuilder {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lnet/dv8tion/jda/api/modals/Modal;
+	public final fun getCustomId ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun paragraphtextinput (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun setCustomId (Ljava/lang/String;)V
+	public final fun setLabel (Ljava/lang/String;)V
+	public final fun shorttextinput (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public final fun textinput (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/components/textinput/TextInputStyle;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/kotdex/builders/modal/ModalBuilderKt {
+	public static final fun modal (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/modals/Modal;
+}
+
+public abstract interface annotation class com/kotdex/builders/modal/ModalDslBuilder : java/lang/annotation/Annotation {
+}
+
+public final class com/kotdex/builders/modal/ParagraphTextInputBuilder : com/kotdex/builders/modal/TextInputBuilder {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class com/kotdex/builders/modal/ParagraphTextInputBuilderKt {
+	public static final fun paragraphtextinput (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/components/label/Label;
+}
+
+public final class com/kotdex/builders/modal/ShortTextInputBuilder : com/kotdex/builders/modal/TextInputBuilder {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+}
+
+public final class com/kotdex/builders/modal/ShortTextInputBuilderKt {
+	public static final fun shorttextinput (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/components/label/Label;
+}
+
+public class com/kotdex/builders/modal/TextInputBuilder : com/kotdex/builders/IBuilder {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/components/textinput/TextInputStyle;)V
+	public synthetic fun build ()Ljava/lang/Object;
+	public fun build ()Lnet/dv8tion/jda/api/components/label/Label;
+	protected final fun getCustomId ()Ljava/lang/String;
+	protected final fun getLabel ()Ljava/lang/String;
+	public final fun getPlaceholder ()Ljava/lang/String;
+	public final fun getRequiredLength ()Lkotlin/ranges/IntRange;
+	protected final fun getStyle ()Lnet/dv8tion/jda/api/components/textinput/TextInputStyle;
+	public final fun setPlaceholder (Ljava/lang/String;)V
+	public final fun setRequiredLength (Lkotlin/ranges/IntRange;)V
+}
+
+public final class com/kotdex/builders/modal/TextInputBuilderKt {
+	public static final fun textinput (Ljava/lang/String;Ljava/lang/String;Lnet/dv8tion/jda/api/components/textinput/TextInputStyle;Lkotlin/jvm/functions/Function1;)Lnet/dv8tion/jda/api/components/label/Label;
+}
+
+public abstract interface annotation class com/kotdex/builders/modal/TextInputDslMarker : java/lang/annotation/Annotation {
+}
+
+public final class com/kotdex/coroutines/EventsKt {
+	public static final fun awaitEvent-1Y68eR8 (Lnet/dv8tion/jda/api/JDA;Ljava/lang/Class;JLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun awaitModal-exY8QGI (Lnet/dv8tion/jda/api/interactions/callbacks/IModalCallback;Lnet/dv8tion/jda/api/modals/Modal;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun awaitModal-exY8QGI$default (Lnet/dv8tion/jda/api/interactions/callbacks/IModalCallback;Lnet/dv8tion/jda/api/modals/Modal;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/kotdex/coroutines/RestActionsKt {
+	public static final fun await (Lnet/dv8tion/jda/api/requests/RestAction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/kotdex/guards/Guard {
+	public abstract fun check (Lnet/dv8tion/jda/api/events/GenericEvent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/kotdex/metadata/ComponentDescriptor {
+	public final fun getKind ()Lcom/kotdex/metadata/ComponentKind;
+	public final fun getPattern ()Lkotlin/text/Regex;
+}
+
+public final class com/kotdex/metadata/ComponentKind : java/lang/Enum {
+	public static final field BUTTON Lcom/kotdex/metadata/ComponentKind;
+	public static final field MODAL Lcom/kotdex/metadata/ComponentKind;
+	public static final field SELECT_MENU Lcom/kotdex/metadata/ComponentKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/kotdex/metadata/ComponentKind;
+	public static fun values ()[Lcom/kotdex/metadata/ComponentKind;
+}
+
+public final class com/kotdex/metadata/ContextMenuDescriptor {
+	public final fun getName ()Ljava/lang/String;
+	public final fun getType ()Lnet/dv8tion/jda/api/interactions/commands/Command$Type;
+}
+
+public final class com/kotdex/metadata/EventDescriptor {
+	public final fun getOnce ()Z
+	public final fun getType ()Lkotlin/reflect/KClass;
+}
+
+public final class com/kotdex/metadata/MetadataStorage {
+	public final fun getComponentHandlers ()Ljava/util/List;
+	public final fun getContextMenuCommands ()Ljava/util/List;
+	public final fun getEventListeners ()Ljava/util/List;
+	public final fun getSimpleCommands ()Ljava/util/List;
+	public final fun getSlashCommands ()Ljava/util/List;
+	public final fun getSlashGroups ()Ljava/util/List;
+}
+
+public final class com/kotdex/metadata/OptionDescriptor {
+	public final fun getAutocomplete ()Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRequired ()Z
+	public final fun getRest ()Z
+	public final fun getType ()Lnet/dv8tion/jda/api/interactions/commands/OptionType;
+}
+
+public final class com/kotdex/metadata/SimpleCommandDescriptor {
+	public final fun getAliases ()Ljava/util/List;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOptions ()Ljava/util/List;
+	public final fun usage (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class com/kotdex/metadata/SlashDescriptor {
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getGuildOnly ()Z
+	public final fun getGuilds ()Ljava/util/Set;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNsfw ()Z
+	public final fun getOptions ()Ljava/util/List;
+	public final fun getPath ()Ljava/util/List;
+	public final fun getPermissions ()Ljava/util/Set;
+}
+
+public final class com/kotdex/metadata/SlashGroupDescriptor {
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRoot ()Ljava/lang/String;
+}
+
+public final class com/kotdex/theme/Theme {
+	public static final field INSTANCE Lcom/kotdex/theme/Theme;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getInfo ()Ljava/lang/String;
+	public final fun getPrimary ()Ljava/lang/String;
+	public final fun getSuccess ()Ljava/lang/String;
+	public final fun getWarning ()Ljava/lang/String;
+	public final fun setError (Ljava/lang/String;)V
+	public final fun setInfo (Ljava/lang/String;)V
+	public final fun setPrimary (Ljava/lang/String;)V
+	public final fun setSuccess (Ljava/lang/String;)V
+	public final fun setWarning (Ljava/lang/String;)V
+}
+
+public final class com/kotdex/utils/Timestamp {
+	public static final synthetic fun box-impl (Ljava/util/Date;)Lcom/kotdex/utils/Timestamp;
+	public static fun constructor-impl (Ljava/util/Date;)Ljava/util/Date;
+	public static synthetic fun constructor-impl$default (Ljava/util/Date;ILkotlin/jvm/internal/DefaultConstructorMarker;)Ljava/util/Date;
+	public static final fun dateAndTimeFull-impl (Ljava/util/Date;)Ljava/lang/String;
+	public static final fun dateAndTimeFullNoWeekday-impl (Ljava/util/Date;)Ljava/lang/String;
+	public static final fun dateDDMMYYYY-impl (Ljava/util/Date;)Ljava/lang/String;
+	public static final fun dateFull-impl (Ljava/util/Date;)Ljava/lang/String;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Ljava/util/Date;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Ljava/util/Date;Ljava/util/Date;)Z
+	public final fun getDate ()Ljava/util/Date;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Ljava/util/Date;)I
+	public static final fun time24-impl (Ljava/util/Date;)Ljava/lang/String;
+	public static final fun time24Seconds-impl (Ljava/util/Date;)Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Ljava/util/Date;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Ljava/util/Date;
+}
+
+public final class com/kotdex/utils/checkers/FailedCheck {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/kotdex/utils/checkers/FailedCheck;
+	public static synthetic fun copy$default (Lcom/kotdex/utils/checkers/FailedCheck;Ljava/lang/String;ILjava/lang/Object;)Lcom/kotdex/utils/checkers/FailedCheck;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/kotdex/utils/checkers/IChecker {
+	public abstract fun check (Ljava/lang/Object;)Lcom/kotdex/utils/checkers/FailedCheck;
+}
+
+public final class com/kotdex/utils/checkers/handlers/CheckerHandler : com/kotdex/utils/checkers/handlers/ICheckerHandler {
+	public fun <init> ()V
+	public fun addChecker (Lcom/kotdex/utils/checkers/IChecker;)Lcom/kotdex/utils/checkers/handlers/ICheckerHandler;
+	public synthetic fun handle (Ljava/lang/Object;Z)Ljava/lang/Object;
+	public fun handle (Ljava/lang/Object;Z)Ljava/util/List;
+}
+
+public abstract interface class com/kotdex/utils/checkers/handlers/ICheckerHandler {
+	public abstract fun addChecker (Lcom/kotdex/utils/checkers/IChecker;)Lcom/kotdex/utils/checkers/handlers/ICheckerHandler;
+	public abstract fun handle (Ljava/lang/Object;Z)Ljava/lang/Object;
+	public static synthetic fun handle$default (Lcom/kotdex/utils/checkers/handlers/ICheckerHandler;Ljava/lang/Object;ZILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/kotdex/utils/checkers/handlers/ICheckerHandler$DefaultImpls {
+	public static synthetic fun handle$default (Lcom/kotdex/utils/checkers/handlers/ICheckerHandler;Ljava/lang/Object;ZILjava/lang/Object;)Ljava/lang/Object;
+}
+

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
@@ -24,6 +25,9 @@ kotlin {
         jvmTarget = JvmTarget.JVM_17
         freeCompilerArgs.add("-Xjdk-release=17")
     }
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
 }
 
 dependencies {
